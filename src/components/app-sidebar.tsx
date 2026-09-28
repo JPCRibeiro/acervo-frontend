@@ -15,7 +15,7 @@ import {
 import { NavLink } from "react-router";
 import { useMe } from "@/features/user/api/queries";
 import { NavUser } from "./nav-user";
-import { OrgSwitcher } from "./org-switcher";
+import { OrgSwitcher } from "../features/organization/components/org-switcher";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: me } = useMe();
