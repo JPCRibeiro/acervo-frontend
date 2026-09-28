@@ -7,47 +7,73 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/auth";
 import { ApiError } from "@/lib/api/errors";
-import { loginSchema, type LoginFormType } from "@/features/auth/schema";
 import {
   Field,
   FieldError,
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
+import { registerSchema, type RegisterFormType } from "@/features/auth/schema";
 
-export default function LoginPage() {
-  const login = useAuthStore((s) => s.login);
+export default function RegisterPage() {
+  const registerAccount = useAuthStore((s) => s.register);
   const navigate = useNavigate();
   const [formError, setFormError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormType>({ resolver: zodResolver(loginSchema) });
+  } = useForm<RegisterFormType>({ resolver: zodResolver(registerSchema) });
 
-  const onSubmit = async (data: LoginFormType) => {
+  const onSubmit = async (data: RegisterFormType) => {
     setFormError(null);
     try {
-      await login(data.email, data.password);
+      await registerAccount(data);
       navigate("/", { replace: true });
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : "Erro ao entrar");
+      setFormError(
+        err instanceof ApiError ? err.message : "Erro ao criar conta",
+      );
     }
   };
 
   return (
     <>
       <div className="mb-6 space-y-1">
-        <h3 className="text-xl font-semibold text-card-foreground">
-          Acesse seu workspace
-        </h3>
+        <h1 className="text-xl font-semibold text-card-foreground">
+          Criar conta
+        </h1>
         <p className="text-sm text-muted-foreground">
-          Acesse com sua conta ou entre com um convite.
+          Crie sua organização no Acervo
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="name">Nome</FieldLabel>
+            <Input
+              id="name"
+              autoComplete="name"
+              aria-invalid={!!errors.name}
+              {...register("name")}
+            />
+            {errors.name && <FieldError>{errors.name.message}</FieldError>}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="organizationName">Organização</FieldLabel>
+            <Input
+              id="organizationName"
+              aria-invalid={!!errors.organizationName}
+              {...register("organizationName")}
+            />
+            {errors.organizationName && (
+              <FieldError>{errors.organizationName.message}</FieldError>
+            )}
+          </Field>
+
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
             <Input
@@ -65,7 +91,7 @@ export default function LoginPage() {
             <Input
               id="password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               aria-invalid={!!errors.password}
               {...register("password")}
             />
@@ -83,25 +109,25 @@ export default function LoginPage() {
             disabled={isSubmitting}
           >
             {isSubmitting && <Loader2 className="animate-spin" />}
-            Entrar
+            Criar conta
           </Button>
         </FieldGroup>
       </form>
 
       <p className="mt-4 text-center text-sm text-muted-foreground">
-        Não tem conta?{" "}
+        Já tem conta?{" "}
         <Link
-          to="/register"
+          to="/login"
           className="text-foreground underline underline-offset-4"
         >
-          Criar conta
+          Entrar
         </Link>
         {" · "}
         <Link
           to="/join"
           className="text-foreground underline underline-offset-4"
         >
-          Tenho convite
+          Tenho um convite
         </Link>
       </p>
     </>

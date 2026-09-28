@@ -6,14 +6,17 @@ import App from "./App";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { registerApiInterceptors } from "./lib/api/interceptors";
-import ProtectedLayout from "./lib/layouts/ProtectedLayout";
+import ProtectedLayout from "./layouts/ProtectedLayout";
 import LoginPage from "./app/(auth)/LoginPage";
-import AppShell from "./lib/layouts/AppShell";
+import AppShell from "./layouts/AppShell";
 import ChatPage from "./app/ChatPage";
 import DocumentsPage from "./app/DocumentsPage";
 import ConfigsPage from "./app/ConfigsPage";
 import { TooltipProvider } from "./components/ui/tooltip";
 import SourcePage from "./app/SourcePage";
+import JoinPage from "./app/(auth)/JoinPage";
+import RegisterPage from "./app/(auth)/Register";
+import AuthLayout from "./layouts/AuthLayout";
 
 registerApiInterceptors();
 
@@ -22,7 +25,14 @@ const router = createBrowserRouter([
     path: "/",
     Component: App,
     children: [
-      { path: "login", Component: LoginPage },
+      {
+        Component: AuthLayout,
+        children: [
+          { path: "login", Component: LoginPage },
+          { path: "register", Component: RegisterPage },
+          { path: "join", Component: JoinPage },
+        ],
+      },
       {
         Component: ProtectedLayout,
         children: [

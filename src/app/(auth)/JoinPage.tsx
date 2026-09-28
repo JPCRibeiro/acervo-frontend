@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAuthStore } from "@/store/auth";
 import { ApiError } from "@/lib/api/errors";
-import { loginSchema, type LoginFormType } from "@/features/auth/schema";
+import { joinSchema, type JoinFormType } from "@/features/auth/schema";
 import {
   Field,
   FieldError,
@@ -15,39 +15,65 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 
-export default function LoginPage() {
-  const login = useAuthStore((s) => s.login);
+export default function JoinPage() {
+  const joinOrg = useAuthStore((s) => s.join);
   const navigate = useNavigate();
   const [formError, setFormError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginFormType>({ resolver: zodResolver(loginSchema) });
+  } = useForm<JoinFormType>({ resolver: zodResolver(joinSchema) });
 
-  const onSubmit = async (data: LoginFormType) => {
+  const onSubmit = async (data: JoinFormType) => {
     setFormError(null);
     try {
-      await login(data.email, data.password);
+      await joinOrg(data);
       navigate("/", { replace: true });
     } catch (err) {
-      setFormError(err instanceof ApiError ? err.message : "Erro ao entrar");
+      setFormError(
+        err instanceof ApiError ? err.message : "Erro ao entrar com convite",
+      );
     }
   };
 
   return (
     <>
       <div className="mb-6 space-y-1">
-        <h3 className="text-xl font-semibold text-card-foreground">
-          Acesse seu workspace
-        </h3>
+        <h1 className="text-xl font-semibold text-card-foreground">
+          Entrar com convite
+        </h1>
         <p className="text-sm text-muted-foreground">
-          Acesse com sua conta ou entre com um convite.
+          Junte-se a uma organização existente
         </p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor="inviteCode">Código de convite</FieldLabel>
+            <Input
+              id="inviteCode"
+              aria-invalid={!!errors.inviteCode}
+              {...register("inviteCode")}
+            />
+            {errors.inviteCode && (
+              <FieldError>{errors.inviteCode.message}</FieldError>
+            )}
+          </Field>
+
+          <Field>
+            <FieldLabel htmlFor="name">Nome</FieldLabel>
+            <Input
+              id="name"
+              autoComplete="name"
+              aria-invalid={!!errors.name}
+              {...register("name")}
+            />
+            {errors.name && <FieldError>{errors.name.message}</FieldError>}
+          </Field>
+
           <Field>
             <FieldLabel htmlFor="email">Email</FieldLabel>
             <Input
@@ -65,7 +91,7 @@ export default function LoginPage() {
             <Input
               id="password"
               type="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
               aria-invalid={!!errors.password}
               {...register("password")}
             />
@@ -89,19 +115,12 @@ export default function LoginPage() {
       </form>
 
       <p className="mt-4 text-center text-sm text-muted-foreground">
-        Não tem conta?{" "}
+        Quer criar sua própria organização?{" "}
         <Link
           to="/register"
           className="text-foreground underline underline-offset-4"
         >
           Criar conta
-        </Link>
-        {" · "}
-        <Link
-          to="/join"
-          className="text-foreground underline underline-offset-4"
-        >
-          Tenho convite
         </Link>
       </p>
     </>

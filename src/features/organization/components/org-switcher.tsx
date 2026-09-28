@@ -14,13 +14,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar";
 import { useOrganizations } from "@/features/organization/api/queries";
 import { useAuthStore } from "@/store/auth";
 
 export function OrgSwitcher() {
-  const { isMobile } = useSidebar();
   const { data: orgs } = useOrganizations();
   const currentOrgId = useAuthStore((s) => s.organizationId);
   const switchOrganization = useAuthStore((s) => s.switchOrganization);
@@ -31,8 +29,7 @@ export function OrgSwitcher() {
     if (id === currentOrgId) return;
     try {
       await switchOrganization(id);
-    } catch {
-    }
+    } catch {}
   };
 
   return (
@@ -50,16 +47,18 @@ export function OrgSwitcher() {
                     <Building2 className="size-4" />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{active?.name ?? 'Selecione'}</span>
+                    <span className="truncate font-medium">
+                      {active?.name ?? "Selecione"}
+                    </span>
                     <span className="truncate text-xs">{active?.role}</span>
                   </div>
                   <ChevronsUpDown className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                className="w-(--radix-dropdown-menu-trigger-width) rounded-lg"
                 align="start"
-                side={isMobile ? 'bottom' : 'right'}
+                side="bottom"
                 sideOffset={4}
               >
                 <DropdownMenuLabel className="text-xs text-muted-foreground">
@@ -75,7 +74,9 @@ export function OrgSwitcher() {
                       <Building2 className="size-3.5 shrink-0" />
                     </div>
                     <span className="flex-1 truncate">{org.name}</span>
-                    {org.id === currentOrgId && <Check className="size-4 shrink-0" />}
+                    {org.id === currentOrgId && (
+                      <Check className="size-4 shrink-0" />
+                    )}
                   </DropdownMenuItem>
                 ))}
                 <DropdownMenuSeparator />
@@ -83,7 +84,9 @@ export function OrgSwitcher() {
                   <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                     <Plus className="size-4" />
                   </div>
-                  <div className="font-medium text-muted-foreground">Criar organização</div>
+                  <div className="font-medium text-muted-foreground">
+                    Criar organização
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
