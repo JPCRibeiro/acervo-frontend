@@ -32,7 +32,6 @@ export function OrgSwitcher() {
     try {
       await switchOrganization(id);
     } catch {
-      /* toast depois */
     }
   };
 
