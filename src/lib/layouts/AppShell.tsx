@@ -17,7 +17,7 @@ export default function AppShell() {
       }
     >
       <AppSidebar variant="inset" />
-      <SidebarInset>
+      <SidebarInset className="border-2 border-border">
         <SiteHeader />
         <div className="flex-1 overflow-auto">
           <Outlet />

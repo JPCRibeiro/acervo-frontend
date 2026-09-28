@@ -61,3 +61,21 @@ export type ChatMessage =
       content: string;
       sources: SourceCitation[];
 };
+
+export type DocumentStatus = 'PENDING' | 'PROCESSING' | 'READY' | 'FAILED';
+
+export type DocumentSummary = {
+  id: string;
+  fileName: string;
+  status: DocumentStatus;
+  chunkCount: number;
+  fileSizeBytes: number;
+  uploadedAt: string;
+  failureReason: string | null;
+}
+
+export type IngestionResponse = {
+  documentId: string;
+  fileName: string;
+  status: DocumentStatus;
+}
