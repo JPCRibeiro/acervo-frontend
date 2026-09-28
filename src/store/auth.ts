@@ -4,6 +4,24 @@ import { decodeAccessToken } from '@/lib/jwt';
 import * as authApi from '@/features/auth/api/requests';
 import type { Role } from '@/types';
 
+const SESSION_HINT = 'acervo.session';
+
+function hasSessionHint(): boolean {
+  try {
+    return localStorage.getItem(SESSION_HINT) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function setSessionHint(on: boolean): void {
+  try {
+    if (on) localStorage.setItem(SESSION_HINT, '1');
+    else localStorage.removeItem(SESSION_HINT);
+  } catch {
+  }
+}
+
 type Status = 'loading' | 'authenticated' | 'unauthenticated';
 
 type AuthState = {
@@ -35,29 +53,35 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   role: null,
 
   applyToken: (accessToken) => {
-    const claims = decodeAccessToken(accessToken);
-    set({
-      accessToken,
-      userId: claims?.sub ?? null,
-      organizationId: claims?.organizationId ?? null,
-      role: claims?.role ?? null,
-      status: 'authenticated',
-    });
-  },
+  const claims = decodeAccessToken(accessToken);
+  set({
+    accessToken,
+    userId: claims?.sub ?? null,
+    organizationId: claims?.organizationId ?? null,
+    role: claims?.role ?? null,
+    status: 'authenticated',
+  });
+  setSessionHint(true);
+},
 
   clearSession: () => {
-    set({ status: 'unauthenticated', accessToken: null, userId: null, organizationId: null, role: null });
-    queryClient.clear();
-  },
+  set({ status: 'unauthenticated', accessToken: null, userId: null, organizationId: null, role: null });
+  setSessionHint(false);
+  queryClient.clear();
+},
 
   bootstrap: async () => {
-    try {
-      const token = await get().refreshSession();
-      get().applyToken(token);
-    } catch {
-      get().clearSession();
-    }
-  },
+  if (!hasSessionHint()) {
+    set({ status: 'unauthenticated' });
+    return;
+  }
+  try {
+    const token = await get().refreshSession();
+    get().applyToken(token);
+  } catch {
+    get().clearSession();
+  }
+},
 
   refreshSession: () => {
     refreshing ??= (async () => {
