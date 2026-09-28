@@ -48,9 +48,9 @@ export type SourceCitation = {
   snippets: Snippet[];
 }
 
-export type ChatResponse = {
-  answer: string;
-  sources: SourceCitation[];
+export type ChatStreamResponse = {
+  textDelta: string;
+  sources: SourceCitation[] | null;
 }
 
 export type ChatMessage =
@@ -60,4 +60,4 @@ export type ChatMessage =
       role: "assistant";
       content: string;
       sources: SourceCitation[];
-    };
+};
