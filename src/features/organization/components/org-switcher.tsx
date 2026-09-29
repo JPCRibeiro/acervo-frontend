@@ -1,4 +1,4 @@
-import { Building2, Check, ChevronsUpDown, Plus } from "lucide-react";
+import { Building2, Check, ChevronsUpDown, KeyRound, Plus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -17,11 +17,14 @@ import {
 } from "@/components/ui/sidebar";
 import { useOrganizations } from "@/features/organization/api/queries";
 import { useAuthStore } from "@/store/auth";
+import { useState } from "react";
+import { CreateOrgDialog, JoinOrgDialog } from "./org-dialogs";
 
 export function OrgSwitcher() {
   const { data: orgs } = useOrganizations();
   const currentOrgId = useAuthStore((s) => s.organizationId);
   const switchOrganization = useAuthStore((s) => s.switchOrganization);
+  const [dialog, setDialog] = useState<'create' | 'join' | null>(null);
 
   const active = orgs?.find((o) => o.id === currentOrgId);
 
@@ -80,19 +83,25 @@ export function OrgSwitcher() {
                   </DropdownMenuItem>
                 ))}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="gap-2 p-2">
+                <DropdownMenuItem onSelect={() => setDialog('create')} className="gap-2 p-2">
                   <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                     <Plus className="size-4" />
                   </div>
-                  <div className="font-medium text-muted-foreground">
-                    Criar organização
+                  <span className="font-medium text-muted-foreground">Criar organização</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDialog('join')} className="gap-2 p-2">
+                  <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                    <KeyRound className="size-4" />
                   </div>
+                  <span className="font-medium text-muted-foreground">Entrar com convite</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarGroupContent>
+      <CreateOrgDialog open={dialog === 'create'} onOpenChange={(v) => setDialog(v ? 'create' : null)} />
+      <JoinOrgDialog open={dialog === 'join'} onOpenChange={(v) => setDialog(v ? 'join' : null)} />
     </SidebarGroup>
   );
 }

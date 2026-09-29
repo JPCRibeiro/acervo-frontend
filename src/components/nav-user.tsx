@@ -10,7 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { logout } from "@/features/auth/api/requests";
 import { useAuthStore } from "@/store/auth";
 import {
   EllipsisVerticalIcon,

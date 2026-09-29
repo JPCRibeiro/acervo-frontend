@@ -9,6 +9,7 @@ import { SiteHeader } from "@/components/site-header";
 export default function AppShell() {
   return (
     <SidebarProvider
+      className="h-svh"
       style={
         {
           "--sidebar-width": "calc(var(--spacing) * 72)",
@@ -19,7 +20,7 @@ export default function AppShell() {
       <AppSidebar variant="inset" />
       <SidebarInset className="border-2 border-border">
         <SiteHeader />
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 min-h-0 overflow-y-auto">
           <Outlet />
         </div>
       </SidebarInset>

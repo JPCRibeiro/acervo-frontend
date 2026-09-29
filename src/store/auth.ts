@@ -3,6 +3,7 @@ import { queryClient } from "@/lib/queryClient";
 import { decodeAccessToken } from "@/lib/jwt";
 import * as authApi from "@/features/auth/api/requests";
 import type { Role } from "@/types";
+import { useLastSources } from "./last-sources";
 
 const SESSION_HINT = "acervo.session";
 
@@ -72,6 +73,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       role: null,
     });
     setSessionHint(false);
+    useLastSources.getState().clear();
     queryClient.clear();
   },
 
@@ -117,7 +119,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   switchOrganization: async (organizationId) => {
     const { accessToken } = await authApi.switchOrganization(organizationId);
     get().applyToken(accessToken);
-
+    useLastSources.getState().clear();
     queryClient.removeQueries({
       predicate: (q) => {
         const root = q.queryKey[0];

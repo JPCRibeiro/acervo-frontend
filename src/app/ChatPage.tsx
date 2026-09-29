@@ -5,6 +5,7 @@ import { toApiError } from '@/lib/api/errors';
 import type { ChatMessage } from '@/types';
 import { MessageBubble } from '@/features/chat/components/message-bubble';
 import { streamAsk } from '@/features/chat/stream';
+import { useLastSources } from '@/store/last-sources';
 
 const WORD_INTERVAL_MS = 45;
 
@@ -94,7 +95,10 @@ export default function ChatPage() {
         question,
         {
           onToken: (delta) => { buffer.value += delta; },
-          onSources: (sources) => patchAssistant(assistantId, (m) => ({ ...m, sources })),
+          onSources: (sources) => {
+            patchAssistant(assistantId, (m) => ({ ...m, sources }));
+            useLastSources.getState().setLastSources(question, sources);
+          },
         },
         controller.signal,
       );
