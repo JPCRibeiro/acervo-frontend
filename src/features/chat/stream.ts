@@ -14,10 +14,12 @@ class StreamHttpError extends Error {
 interface StreamHandlers {
   onToken: (delta: string) => void;
   onSources: (sources: SourceCitation[]) => void;
+  onConversationId?: (id: string) => void;
 }
 
 async function openStream(
   question: string,
+  conversationId: string | null,
   token: string | null,
   handlers: StreamHandlers,
   signal: AbortSignal,
@@ -32,7 +34,7 @@ async function openStream(
       Accept: 'text/event-stream',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({ question }),
+    body: JSON.stringify({ conversationId, question }),
     async onopen(res) {
       const ct = res.headers.get('content-type') ?? '';
       if (res.ok && ct.includes('text/event-stream')) return;
@@ -41,6 +43,7 @@ async function openStream(
     onmessage(ev) {
       if (!ev.data) return;
       const chunk = JSON.parse(ev.data) as ChatStreamResponse;
+      if (chunk.conversationId) handlers.onConversationId?.(chunk.conversationId);
       if (chunk.sources) handlers.onSources(chunk.sources);
       if (chunk.textDelta) handlers.onToken(chunk.textDelta);
     },
@@ -54,15 +57,16 @@ export async function streamAsk(
   question: string,
   handlers: StreamHandlers,
   signal: AbortSignal,
+  conversationId: string | null = null,
 ) {
   const token = useAuthStore.getState().accessToken;
   try {
-    await openStream(question, token, handlers, signal);
+    await openStream(question, conversationId, token, handlers, signal);
   } catch (err) {
     if (err instanceof StreamHttpError && err.status === 401) {
       const fresh = await useAuthStore.getState().refreshSession();
       useAuthStore.getState().applyToken(fresh);
-      await openStream(question, fresh, handlers, signal);
+      await openStream(question, conversationId, fresh, handlers, signal);
     } else {
       throw err;
     }

@@ -49,6 +49,7 @@ export type SourceCitation = {
 }
 
 export type ChatStreamResponse = {
+  conversationId: string | null;
   textDelta: string;
   sources: SourceCitation[] | null;
 }
@@ -83,3 +84,27 @@ export type IngestionResponse = {
 export type InviteCode = {
   inviteCode: string;
 }
+
+export type ConversationSummary = {
+  id: string;
+  title: string;
+  updatedAt: string;
+};
+
+export type ConversationRole = "USER" | "ASSISTANT";
+
+export type ConversationMessage = {
+  id: string;
+  role: ConversationRole;
+  content: string;
+  sources: SourceCitation[];
+  createdAt: string;
+};
+
+export type ConversationDetail = {
+  id: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ConversationMessage[];
+};

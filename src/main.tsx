@@ -48,6 +48,14 @@ const router = createBrowserRouter([
                 },
               },
               {
+                path: "c/:id",
+                Component: ChatPage,
+                handle: {
+                  title: "Assistente de Documentos",
+                  subtitle: "Conversa",
+                },
+              },
+              {
                 path: "documentos",
                 Component: DocumentsPage,
                 handle: {
