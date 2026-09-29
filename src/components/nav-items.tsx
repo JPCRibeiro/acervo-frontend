@@ -5,14 +5,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Cog, Files, Quote, SquarePen } from "lucide-react";
+import { Cog, FolderOpen, Quote, SquarePen } from "lucide-react";
 import { NavLink, useMatch } from "react-router";
 
 type NavItemData = { label: string; url: string; icon?: React.ReactNode };
 
 const navItems = [
   { label: "Novo Chat", url: "/", icon: <SquarePen /> },
-  { label: "Documentos", url: "/documentos", icon: <Files /> },
+  { label: "Documentos", url: "/documentos", icon: <FolderOpen /> },
   { label: "Fontes & Citações", url: "/fontes", icon: <Quote /> },
   { label: "Configurações", url: "/workspace", icon: <Cog /> },
 ];
