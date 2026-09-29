@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { logout } from "@/features/auth/api/requests";
+import { useAuthStore } from "@/store/auth";
 import {
   EllipsisVerticalIcon,
   LogOutIcon,
@@ -34,7 +35,7 @@ export function NavUser({
     email: string;
   };
 }) {
-  const logOut = logout();
+  const logout = useAuthStore((s) => s.logout)
 
   return (
     <SidebarMenu>
@@ -66,8 +67,8 @@ export function NavUser({
             sideOffset={4}
           >
             
-            <DropdownMenuItem onClick={() => logOut} className="text-red-400">
-              <LogOutIcon/>
+            <DropdownMenuItem onClick={() => logout()} className="text-red-400">
+              <LogOutIcon />
               Sair
             </DropdownMenuItem>
           </DropdownMenuContent>
