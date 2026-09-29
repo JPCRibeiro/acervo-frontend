@@ -11,12 +11,12 @@ import LoginPage from "./app/(auth)/LoginPage";
 import AppShell from "./layouts/AppShell";
 import ChatPage from "./app/ChatPage";
 import DocumentsPage from "./app/DocumentsPage";
-import ConfigsPage from "./app/ConfigsPage";
 import { TooltipProvider } from "./components/ui/tooltip";
 import SourcePage from "./app/SourcePage";
 import JoinPage from "./app/(auth)/JoinPage";
-import RegisterPage from "./app/(auth)/Register";
+import RegisterPage from "./app/(auth)/RegisterPage";
 import AuthLayout from "./layouts/AuthLayout";
+import Workspace from "./app/WorkspacePage";
 
 registerApiInterceptors();
 
@@ -28,9 +28,9 @@ const router = createBrowserRouter([
       {
         Component: AuthLayout,
         children: [
-          { path: "login", Component: LoginPage },
-          { path: "register", Component: RegisterPage },
-          { path: "join", Component: JoinPage },
+          { path: "entrar", Component: LoginPage },
+          { path: "cadastro", Component: RegisterPage },
+          { path: "juntar", Component: JoinPage },
         ],
       },
       {
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "workspace",
-                Component: ConfigsPage,
+                Component: Workspace,
                 handle: {
                   title: "Configurações do workspace",
                   subtitle: "Convites e membros",

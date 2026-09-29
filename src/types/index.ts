@@ -79,3 +79,7 @@ export type IngestionResponse = {
   fileName: string;
   status: DocumentStatus;
 }
+
+export type InviteCode = {
+  inviteCode: string;
+}

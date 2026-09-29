@@ -91,14 +91,14 @@ export default function LoginPage() {
       <p className="mt-4 text-center text-sm text-muted-foreground">
         Não tem conta?{" "}
         <Link
-          to="/register"
+          to="/cadastro"
           className="text-foreground underline underline-offset-4"
         >
           Criar conta
         </Link>
         {" · "}
         <Link
-          to="/join"
+          to="/juntar"
           className="text-foreground underline underline-offset-4"
         >
           Tenho convite

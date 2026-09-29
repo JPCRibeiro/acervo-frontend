@@ -117,7 +117,7 @@ export default function JoinPage() {
       <p className="mt-4 text-center text-sm text-muted-foreground">
         Quer criar sua própria organização?{" "}
         <Link
-          to="/register"
+          to="/cadastro"
           className="text-foreground underline underline-offset-4"
         >
           Criar conta

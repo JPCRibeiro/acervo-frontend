@@ -5,7 +5,8 @@ export default function ProtectedLayout() {
   const status = useAuthStore((s) => s.status);
 
   if (status === 'unauthenticated') {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/entrar" replace />;
   }
+  
   return <Outlet />;
 }
