@@ -120,7 +120,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     const { accessToken } = await authApi.switchOrganization(organizationId);
     get().applyToken(accessToken);
     useLastSources.getState().clear();
-    queryClient.removeQueries({
+    queryClient.resetQueries({
       predicate: (q) => {
         const root = q.queryKey[0];
         return root !== "organizations" && root !== "me";

@@ -19,11 +19,13 @@ import { useOrganizations } from "@/features/organization/api/queries";
 import { useAuthStore } from "@/store/auth";
 import { useState } from "react";
 import { CreateOrgDialog, JoinOrgDialog } from "./org-dialogs";
+import { useNavigate } from "react-router";
 
 export function OrgSwitcher() {
   const { data: orgs } = useOrganizations();
   const currentOrgId = useAuthStore((s) => s.organizationId);
   const switchOrganization = useAuthStore((s) => s.switchOrganization);
+  const navigate = useNavigate();
   const [dialog, setDialog] = useState<'create' | 'join' | null>(null);
 
   const active = orgs?.find((o) => o.id === currentOrgId);
@@ -32,6 +34,7 @@ export function OrgSwitcher() {
     if (id === currentOrgId) return;
     try {
       await switchOrganization(id);
+      if (location.pathname.startsWith("/c/")) navigate("/");
     } catch {}
   };
 

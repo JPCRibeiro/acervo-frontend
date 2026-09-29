@@ -5,13 +5,13 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Cog, Files, MessagesCircle, Quote } from "lucide-react";
+import { Cog, Files, Quote, SquarePen } from "lucide-react";
 import { NavLink, useMatch } from "react-router";
 
 type NavItemData = { label: string; url: string; icon?: React.ReactNode };
 
 const navItems = [
-  { label: "Chat", url: "/", icon: <MessagesCircle /> },
+  { label: "Novo Chat", url: "/", icon: <SquarePen /> },
   { label: "Documentos", url: "/documentos", icon: <Files /> },
   { label: "Fontes & Citações", url: "/fontes", icon: <Quote /> },
   { label: "Configurações", url: "/workspace", icon: <Cog /> },
@@ -22,7 +22,7 @@ function NavItem({ label, url, icon }: NavItemData) {
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton asChild isActive={!!match} tooltip={label} className="font-normal">
+      <SidebarMenuButton asChild isActive={!!match} tooltip={label}>
         <NavLink to={url} end={url === '/'}>
           {icon}
           <span className="font-normal">{label}</span>

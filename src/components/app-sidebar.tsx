@@ -9,11 +9,11 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { DraftingCompass, VectorPolygon } from "lucide-react";
-import { NavLink } from "react-router";
+import { DraftingCompass } from "lucide-react";
 import { useMe } from "@/features/user/api/queries";
 import { NavUser } from "./nav-user";
 import { OrgSwitcher } from "../features/organization/components/org-switcher";
+import { NavConversations } from "./nav-conversations";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: me } = useMe();
@@ -22,15 +22,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className="data-[slot=sidebar-menu-item]:p-1.5! flex flex-row gap-2 font-medium select-none">
-            <DraftingCompass />
-            Acervo
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              className="data-[slot=sidebar-menu-button]:p-1.5! flex flex-row gap-2 font-normal select-none bg-transparent! cursor-default"
+            >
+                <DraftingCompass className="size-5!" />
+                <span className="text-base">Acervo</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <OrgSwitcher />
         <NavItems />
+        <NavConversations />
       </SidebarContent>
       <SidebarFooter>{me && <NavUser user={me} />}</SidebarFooter>
     </Sidebar>
