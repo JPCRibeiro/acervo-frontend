@@ -79,7 +79,7 @@ export default function DocumentsPage() {
                   <FileText className="size-4 shrink-0 text-muted-foreground" />
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm">{d.fileName}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-muted-foreground truncate">
                       {formatSize(d.fileSizeBytes)} · {formatDate(d.uploadedAt)}
                       {d.status === "READY" && ` · ${d.chunkCount} trechos`}
                     </p>

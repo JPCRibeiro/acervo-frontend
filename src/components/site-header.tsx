@@ -23,7 +23,7 @@ export function SiteHeader() {
   const { title, subtitle } = usePageMeta();
   
   return (
-    <header className="flex h-16 shrink-0 items-center gap-2 px-4">
+    <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b border-border">
       <SidebarTrigger className="-ml-1" />
       <Separator
         orientation="vertical"
@@ -31,7 +31,7 @@ export function SiteHeader() {
       />
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem className="hidden md:block">
+          <BreadcrumbItem>
             <div className="flex flex-col">
               <BreadcrumbPage>{title}</BreadcrumbPage>
               <BreadcrumbPage className="text-muted-foreground text-xs">{subtitle}</BreadcrumbPage>
