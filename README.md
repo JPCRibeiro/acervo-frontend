@@ -1,9 +1,11 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="src/assets/logo-white.png">
-    <img src="src/assets/logo-black.png" alt="Acervo" width="180">
+    <img src="src/assets/logo-black.png" alt="Acervo" width="240">
   </picture>
 </p>
+
+<br />
 
 <p align="center">
   Interface web do Acervo: uma SPA para conversar com seus documentos. O usuário envia arquivos, acompanha a indexação e faz perguntas em um chat que responde em tempo real e mostra de quais documentos veio cada resposta.
