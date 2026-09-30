@@ -12,7 +12,6 @@ import AppShell from "./layouts/AppShell";
 import ChatPage from "./app/ChatPage";
 import DocumentsPage from "./app/DocumentsPage";
 import { TooltipProvider } from "./components/ui/tooltip";
-import SourcePage from "./app/SourcePage";
 import JoinPage from "./app/(auth)/JoinPage";
 import RegisterPage from "./app/(auth)/RegisterPage";
 import AuthLayout from "./layouts/AuthLayout";
@@ -61,14 +60,6 @@ const router = createBrowserRouter([
                 handle: {
                   title: "Ingestão de documentos",
                   subtitle: "Carregue, indexe e monitore seus arquivos",
-                },
-              },
-              {
-                path: "fontes",
-                Component: SourcePage,
-                handle: {
-                  title: "Fontes & citações",
-                  subtitle: "Trechos que fundamentaram a última resposta",
                 },
               },
               {

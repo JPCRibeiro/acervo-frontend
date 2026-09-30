@@ -5,7 +5,6 @@ import { toApiError } from '@/lib/api/errors';
 import type { ChatMessage, ConversationDetail, ConversationMessage, SourceCitation } from '@/types';
 import { MessageBubble } from '@/features/chat/components/message-bubble';
 import { streamAsk } from '@/features/chat/stream';
-import { useLastSources } from '@/store/last-sources';
 import { conversationKey, conversationsKey, useConversation } from '@/features/chat/api/queries';
 import { useNavigate, useParams } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
@@ -162,9 +161,7 @@ export default function ChatPage() {
             fullAnswer += delta;
           },
           onSources: (sources) => {
-            finalSources = sources;
             patchAssistant(assistantId, (m) => ({ ...m, sources }));
-            useLastSources.getState().setLastSources(question, sources);
           },
         },
         controller.signal,
