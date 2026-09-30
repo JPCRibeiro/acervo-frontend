@@ -43,11 +43,9 @@ export type Snippet = {
 export type SourceCitation = {
   documentId: string;
   fileName: string;
-  url: string | null;
   topScore: number;
   snippets: Snippet[];
 }
-
 export type ChatStreamResponse = {
   conversationId: string | null;
   textDelta: string;
